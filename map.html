@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản đồ The Coffee House</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #map { height: 100vh; }
+    .leaflet-popup-content-wrapper { border-radius: 12px; }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-96 bg-white shadow-xl overflow-auto">
+      <div class="p-6 border-b">
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+          <span>☕</span> The Coffee House
+        </h1>
+        <p class="text-amber-700 mt-1">Tìm chi nhánh gần bạn</p>
+      </div>
+
+      <div class="p-6">
+        <h3 class="font-semibold mb-3">Lọc theo</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="filterStores(1)" class="filter-btn bg-amber-100 hover:bg-amber-200 p-3 rounded-2xl text-left">
+            📍 Gần UEH nhất
+          </button>
+          <button onclick="filterStores(2)" class="filter-btn bg-amber-100 hover:bg-amber-200 p-3 rounded-2xl text-left">
+            🪑 Ít đông
+          </button>
+          <button onclick="filterStores(3)" class="filter-btn bg-amber-100 hover:bg-amber-200 p-3 rounded-2xl text-left">
+            ⭐ Đánh giá cao
+          </button>
+          <button onclick="filterStores(4)" class="filter-btn bg-amber-100 hover:bg-amber-200 p-3 rounded-2xl text-left">
+            ⚡ Chờ ít
+          </button>
+        </div>
+      </div>
+
+      <div id="store-list" class="px-6"></div>
+    </div>
+
+    <!-- Map -->
+    <div class="flex-1 relative">
+      <div id="map"></div>
+      <div id="detail-panel" class="hidden absolute bottom-6 right-6 bg-white rounded-3xl shadow-2xl w-96 max-h-[80vh] overflow-auto">
+        <!-- Detail content injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data (bạn có thể mở rộng)
+    let stores = [
+      {
+        id: 1,
+        name: "Nguyễn Thái Bình",
+        address: "141 Nguyễn Thái Bình, Quận 1",
+        lat: 10.7715, lng: 106.6980,
+        distance: 1.8,
+        crowd: "Thấp",
+        waitTime: "5-10p",
+        rating: 4.8,
+        hasSeat: true,
+        walkTime: "8 phút"
+      },
+      {
+        id: 2,
+        name: "Crescent Mall",
+        address: "101 Tôn Dật Tiên, Quận 7",
+        lat: 10.7285, lng: 106.7180,
+        distance: 4.2,
+        crowd: "Trung bình",
+        waitTime: "12-18p",
+        rating: 4.6,
+        hasSeat: true,
+        walkTime: "22 phút"
+      },
+      // Thêm nhiều chi nhánh khác ở đây...
+    ];
+
+    let map, markers = [];
+
+    function initMap() {
+      map = L.map('map').setView([10.7626, 106.6600], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      renderMarkers(stores);
+      renderStoreList(stores);
+    }
+
+    function renderMarkers(data) {
+      markers.forEach(m => m.remove());
+      markers = [];
+
+      data.forEach(store => {
+        const marker = L.marker([store.lat, store.lng])
+          .addTo(map)
+          .bindPopup(`<b>${store.name}</b><br>${store.address}`);
+        
+        marker.on('click', () => showDetail(store));
+        markers.push(marker);
+      });
+    }
+
+    function renderStoreList(data) {
+      const container = document.getElementById('store-list');
+      container.innerHTML = data.map(store => `
+        <div onclick="showDetailFromList(${store.id})" class="mb-4 p-4 border rounded-2xl hover:bg-amber-50 cursor-pointer">
+          <div class="font-semibold">${store.name}</div>
+          <div class="text-sm text-gray-600">${store.address}</div>
+          <div class="flex gap-4 text-xs mt-2">
+            <span>📍 ${store.distance}km</span>
+            <span>⭐ ${store.rating}</span>
+            <span class="text-green-600">${store.crowd}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showDetail(store) {
+      const panel = document.getElementById('detail-panel');
+      panel.classList.remove('hidden');
+      panel.innerHTML = `
+        <div class="p-6">
+          <button onclick="closePanel()" class="float-right text-2xl">×</button>
+          <h2 class="text-2xl font-bold">${store.name}</h2>
+          <p class="text-gray-600">${store.address}</p>
+          
+          <div class="grid grid-cols-2 gap-4 my-6">
+            <div><strong>Độ đông:</strong> ${store.crowd}</div>
+            <div><strong>Chờ order:</strong> ${store.waitTime}</div>
+            <div><strong>Có chỗ ngồi:</strong> ${store.hasSeat ? '✅ Có' : '❌ Hết'}</div>
+            <div><strong>Đi bộ:</strong> ${store.walkTime}</div>
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-2xl">
+            <h4 class="font-semibold mb-2">Dự báo độ đông (AI)</h4>
+            <div class="h-32 bg-white rounded-xl flex items-end justify-around p-4">
+              <div class="text-center"><div class="h-8 bg-green-400 w-6 mx-auto"></div><div class="text-xs mt-1">Sáng</div></div>
+              <div class="text-center"><div class="h-20 bg-amber-400 w-6 mx-auto"></div><div class="text-xs mt-1">Trưa</div></div>
+              <div class="text-center"><div class="h-14 bg-yellow-400 w-6 mx-auto"></div><div class="text-xs mt-1">Chiều</div></div>
+              <div class="text-center"><div class="h-6 bg-green-400 w-6 mx-auto"></div><div class="text-xs mt-1">Tối</div></div>
+            </div>
+          </div>
+
+          <a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank"
+             class="block mt-6 text-center bg-amber-800 text-white py-4 rounded-2xl font-medium">
+            🧭 Mở Google Maps
+          </a>
+        </div>
+      `;
+    }
+
+    function showDetailFromList(id) {
+      const store = stores.find(s => s.id === id);
+      if (store) showDetail(store);
+    }
+
+    function closePanel() {
+      document.getElementById('detail-panel').classList.add('hidden');
+    }
+
+    function filterStores(type) {
+      let filtered = [...stores];
+      
+      if (type === 1) filtered.sort((a,b) => a.distance - b.distance);
+      if (type === 2) filtered.sort((a,b) => a.crowd.localeCompare(b.crowd));
+      if (type === 3) filtered.sort((a,b) => b.rating - a.rating);
+      if (type === 4) filtered.sort((a,b) => a.waitTime.localeCompare(b.waitTime));
+
+      renderMarkers(filtered);
+      renderStoreList(filtered);
+    }
+
+    // Khởi chạy
+    window.onload = initMap;
+  </script>
+</body>
+</html>
