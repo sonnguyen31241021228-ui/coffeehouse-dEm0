@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang tìm...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: linear-gradient(#3c2f2f, #5c4033); color: white; }
+    .coffee { animation: steam 3s infinite; }
+    @keyframes steam { 0%{transform:translateY(0)} 50%{transform:translateY(-20px)} 100%{transform:translateY(0)} }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center text-center">
+  <div class="mb-12">
+    <div class="text-8xl mb-6 coffee">☕</div>
+    <h1 class="text-2xl font-bold">THE COFFEE HOUSE</h1>
+  </div>
+
+  <div id="status" class="text-xl font-medium mb-8 h-8">Finding your best place...</div>
+
+  <div class="w-80 h-2 bg-white/20 rounded-full overflow-hidden mb-8">
+    <div id="progress" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 w-0 transition-all duration-4000"></div>
+  </div>
+
+  <p class="text-sm opacity-75">Powered by The Coffee House AI</p>
+
+  <script>
+    const messages = [
+      "Finding your best place...",
+      "Checking live occupancy...",
+      "Looking for available seats...",
+      "Estimate waiting times..."
+    ];
+    let index = 0;
+    const statusEl = document.getElementById('status');
+    const progressEl = document.getElementById('progress');
+
+    // Chạy progress 4 giây
+    progressEl.style.width = '100%';
+
+    // Đổi text mỗi 1 giây
+    setInterval(() => {
+      index = (index + 1) % messages.length;
+      statusEl.textContent = messages[index];
+    }, 1000);
+
+    // Sau 4.5 giây chuyển sang kết quả (bạn có thể thay bằng map.html sau)
+    setTimeout(() => {
+      alert("✅ Đã tìm thấy quán phù hợp nhất cho bạn!\n\n(Ở đây bạn có thể chuyển sang trang kết quả)");
+      // window.location.href = "map.html";
+    }, 4500);
+  </script>
+</body>
+</html>
