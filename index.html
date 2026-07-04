@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Coffee House - Tìm Cửa Hàng</title>
-    <!-- Tailwind CSS và FontAwesome để làm giao diện nhanh -->
+    <title>The Coffee House - Demo Tính năng Bản Đồ</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f1f5f9;
             font-family: system-ui, -apple-system, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px 0;
         }
-        /* Khung điện thoại giống link mẫu */
+        /* Khung điện thoại cao cấp */
         .phone-frame {
             width: 375px;
-            height: 760px;
-            background: white;
-            border: 10px solid #1a1a1a;
-            border-radius: 40px;
+            height: 780px;
+            background: #fff;
+            border: 12px solid #1e293b;
+            border-radius: 42px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Hiệu ứng mượt cho Bottom Sheet chứa thông tin chi tiết */
+        /* Hiệu ứng mượt cho Bottom Sheet */
         .bottom-sheet {
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -42,195 +43,222 @@
 </head>
 <body>
 
+    <div class="mb-5 bg-white p-4 rounded-2xl shadow-lg max-w-lg w-full text-xs space-y-2 border border-slate-100">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+            <i class="fa-solid fa-chalkboard-user text-[#E57905] text-sm"></i>
+            <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Thanh công cụ Demo (Click theo thứ tự để thuyết trình)</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+            <button onclick="demoStep(1)" id="d-btn-1" class="p-2 rounded-xl bg-orange-600 text-white font-medium text-left shadow-xs">1. Mở Bản đồ</button>
+            <button onclick="demoStep(2)" id="d-btn-2" class="p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left">2. Lọc Khoảng cách</button>
+            <button onclick="demoStep(3)" id="d-btn-3" class="p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left">3. Lọc Độ đông</button>
+            <button onclick="demoStep(4)" id="d-btn-4" class="p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left">4. Lọc Đánh giá</button>
+            <button onclick="demoStep(5)" id="d-btn-5" class="p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left">5. Lọc Chờ đợi</button>
+            <button onclick="demoStep(6)" id="d-btn-6" class="p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left">6. Click chọn Pin</button>
+        </div>
+        <p id="demo-guide" class="text-[11px] text-slate-400 italic mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">
+            Hướng dẫn: Bắt đầu bấm nút 1 để mở giao diện bản đồ từ màn hình chính TCH.
+        </p>
+    </div>
+
     <div class="phone-frame">
         
-        <!-- MAIN APP INTERFACE -->
-        <!-- Màn hình chính (Chỉ để cho đẹp, bấm vào Bản Đồ sẽ mở Map) -->
-        <div id="main-screen" class="flex flex-col h-full">
-            <!-- Header TCH -->
-            <div class="bg-white pt-6 pb-3 px-4 flex justify-between items-center border-b border-gray-100">
+        <div id="main-screen" class="flex flex-col h-full bg-[#FAFAFA]">
+            <div class="bg-white pt-7 pb-3 px-4 flex justify-between items-center shadow-xs">
                 <div class="flex items-center gap-2">
-                    <span class="text-[#E57905] text-xl font-black italic tracking-tighter">the coffee house</span>
+                    <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center text-[#E57905]"><i class="fa-solid fa-sun text-xs"></i></div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-medium">Chào bạn mới,</p>
+                        <p class="text-xs font-bold text-gray-800 flex items-center gap-1">Tích điểm ngay <i class="fa-solid fa-chevron-right text-[8px]"></i></p>
+                    </div>
                 </div>
-                <div class="flex gap-3 text-gray-600">
-                    <i class="fa-regular fa-bell"></i>
+                <div class="flex gap-4 text-gray-500 text-sm">
+                    <div class="relative"><i class="fa-regular fa-bell"></i><span class="absolute top-0 right-0 w-1.5 h-1.5 bg-red-500 rounded-full"></span></div>
                     <i class="fa-solid fa-ticket text-[#E57905]"></i>
                 </div>
             </div>
             
-            <!-- Nội dung trang chủ giả lập -->
             <div class="p-4 flex-1 overflow-y-auto no-scrollbar space-y-4">
-                <!-- Banner -->
-                <div class="w-full h-36 bg-gradient-to-r from-orange-400 to-amber-500 rounded-2xl p-4 text-white flex flex-col justify-end">
-                    <span class="text-xs font-bold opacity-80">Ưu đãi hôm nay</span>
-                    <h2 class="text-lg font-bold">Đồng giá 39k khi đặt qua App</h2>
+                <div class="bg-white p-3 rounded-2xl shadow-xs border border-gray-100 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img src="https://product.hstatic.net/1000075078/product/delivery-menu_4600a9d9b4be46fe8ec697b0a7d97f67.png" class="w-10 h-10 object-contain" alt="delivery">
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-800">Giao hàng tận nơi</h4>
+                            <p class="text-[10px] text-gray-400 truncate w-44">Nhập địa chỉ giao hàng của bạn...</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
                 </div>
-                
-                <!-- Menu chức năng (Tính năng Bản Đồ nằm ở đây) -->
-                <div class="grid grid-cols-4 gap-3 text-center">
-                    <div class="flex flex-col items-center gap-1 opacity-50">
-                        <div class="w-12 h-12 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-lg"><i class="fa-solid fa-mug-hot"></i></div>
+
+                <div class="grid grid-cols-4 gap-y-4 bg-white p-4 rounded-2xl shadow-xs border border-gray-100 text-center">
+                    <div class="flex flex-col items-center gap-1 opacity-40">
+                        <div class="w-11 h-11 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-base"><i class="fa-solid fa-mug-hot"></i></div>
                         <span class="text-[10px] font-medium text-gray-600">Đặt hàng</span>
                     </div>
-                    <!-- NÚT BẤM KÍCH HOẠT BẢN ĐỒ -->
+                    
                     <div onclick="openMapScreen()" class="flex flex-col items-center gap-1 cursor-pointer transform active:scale-95 transition-transform">
-                        <div class="w-12 h-12 rounded-full bg-orange-100 text-[#E57905] flex items-center justify-center text-lg border border-orange-300 relative">
-                            <i class="fa-solid fa-map-location-dot animate-bounce"></i>
+                        <div class="w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center text-base shadow-sm relative">
+                            <i class="fa-solid fa-map-location-dot"></i>
                             <span class="absolute -top-1 -right-1 flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
                         </div>
-                        <span class="text-[10px] font-bold text-gray-800">Bản đồ TCH</span>
+                        <span class="text-[10px] font-bold text-gray-800">Bản đồ quán</span>
                     </div>
-                    <div class="flex flex-col items-center gap-1 opacity-50">
-                        <div class="w-12 h-12 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-lg"><i class="fa-solid fa-crown"></i></div>
-                        <span class="text-[10px] font-medium text-gray-600">KHTT</span>
+
+                    <div class="flex flex-col items-center gap-1 opacity-40">
+                        <div class="w-11 h-11 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-base"><i class="fa-solid fa-truck-fast"></i></div>
+                        <span class="text-[10px] font-medium text-gray-600">Đơn hàng</span>
                     </div>
-                    <div class="flex flex-col items-center gap-1 opacity-50">
-                        <div class="w-12 h-12 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-lg"><i class="fa-solid fa-gamepad"></i></div>
-                        <span class="text-[10px] font-medium text-gray-600">Giải trí</span>
+                    <div class="flex flex-col items-center gap-1 opacity-40">
+                        <div class="w-11 h-11 rounded-full bg-orange-50 text-[#E57905] flex items-center justify-center text-base"><i class="fa-solid fa-compass"></i></div>
+                        <span class="text-[10px] font-medium text-gray-600">Khám phá</span>
                     </div>
                 </div>
 
-                <!-- List tin tức giả lập cho đẹp -->
-                <p class="text-xs font-bold text-gray-800 pt-2">Gợi ý cho bạn</p>
-                <div class="bg-gray-50 border border-gray-100 rounded-xl p-3 flex gap-3">
-                    <div class="w-16 h-16 bg-gray-200 rounded-lg shrink-0"></div>
-                    <div class="space-y-1">
-                        <h4 class="text-xs font-bold text-gray-800">Thử ngay bộ sưu tập Trà Xanh Tây Bắc mới</h4>
-                        <p class="text-[10px] text-gray-400">Vị đậm đà, thơm lừng lá trà non thu hoạch thủ công...</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs font-bold text-gray-800">
+                        <span>Khám phá thêm</span>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-xs border border-gray-100">
+                        <div class="h-28 bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center text-white font-bold text-sm">
+                            BỘ SƯU TẬP TRÀ XANH TÂY BẮC
+                        </div>
+                        <div class="p-3">
+                            <h4 class="text-xs font-bold text-gray-800">Thử ngay Vị Đậm Đà Mới từ TCH</h4>
+                            <p class="text-[10px] text-gray-400 mt-1">Lá trà non Tây Bắc được thu hoạch thủ công tạo hương vị độc bản ngọt hậu...</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabbar bên dưới -->
-            <div class="bg-white border-t border-gray-100 py-2 px-6 flex justify-between text-gray-400 text-xs">
-                <div class="text-[#E57905] flex flex-col items-center"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] mt-0.5 font-medium">Trang chủ</span></div>
-                <div class="flex flex-col items-center"><i class="fa-solid fa-clipboard-list text-lg"></i><span class="text-[9px] mt-0.5 font-medium">Đơn hàng</span></div>
-                <div class="flex flex-col items-center"><i class="fa-solid fa-store text-lg"></i><span class="text-[9px] mt-0.5 font-medium">Cửa hàng</span></div>
-                <div class="flex flex-col items-center"><i class="fa-solid fa-user text-lg"></i><span class="text-[9px] mt-0.5 font-medium">Tài khoản</span></div>
+            <div class="bg-white border-t border-gray-100 py-2 px-4 flex justify-between text-gray-400 text-xs shadow-lg">
+                <div class="text-[#E57905] flex flex-col items-center cursor-pointer"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] mt-1 font-semibold">Trang chủ</span></div>
+                <div class="flex flex-col items-center cursor-pointer opacity-50"><i class="fa-solid fa-mug-hot text-lg"></i><span class="text-[9px] mt-1 font-medium">Đặt món</span></div>
+                <div onclick="openMapScreen()" class="flex flex-col items-center cursor-pointer text-gray-700 font-bold"><i class="fa-solid fa-store text-lg text-orange-600"></i><span class="text-[9px] mt-1 font-semibold">Cửa hàng</span></div>
+                <div class="flex flex-col items-center cursor-pointer opacity-50"><i class="fa-solid fa-ticket text-lg"></i><span class="text-[9px] mt-1 font-medium">Ưu đãi</span></div>
+                <div class="flex flex-col items-center cursor-pointer opacity-50"><i class="fa-solid fa-user text-lg"></i><span class="text-[9px] mt-1 font-medium">Tài khoản</span></div>
             </div>
         </div>
 
 
-        <!-- MAP SCREEN INTERFACE (KÍCH HOẠT KHI BẤM BẢN ĐỒ) -->
         <div id="map-screen" class="absolute inset-0 bg-white z-20 flex flex-col hidden">
-            <!-- Header Map -->
-            <div class="bg-white pt-6 pb-2 px-4 flex items-center gap-3 border-b border-gray-100">
-                <button onclick="closeMapScreen()" class="text-gray-700 text-sm"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                <div class="flex-1 bg-gray-100 rounded-full px-3 py-1.5 flex items-center gap-2 text-xs">
-                    <i class="fa-solid fa-location-dot text-[#E57905]"></i>
-                    <span class="text-gray-600 truncate font-medium">Vị trí: UEH Cơ sở B (Nguyễn Tri Phương)</span>
+            <div class="bg-white pt-7 pb-2 px-3 flex items-center gap-3 border-b border-gray-50 shadow-xs">
+                <button onclick="closeMapScreen()" class="text-gray-600 text-xs bg-gray-100 px-2.5 py-1.5 rounded-xl"><i class="fa-solid fa-chevron-left mr-1"></i>Đóng</button>
+                <div class="flex-1 bg-gray-50 rounded-xl px-3 py-1.5 flex flex-col text-left border border-gray-100">
+                    <span class="text-[11px] font-bold text-gray-800 flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-[#E57905]"></i> Nhà 
+                    </span>
+                    <span class="text-[9px] text-gray-400 font-medium">Tìm quán phù hợp nhất cho bạn ngay lúc này</span>
                 </div>
             </div>
 
-            <!-- THANH BỘ LỌC (FILTER CRITERIA) -->
             <div class="bg-white px-3 py-2 flex gap-1.5 overflow-x-auto no-scrollbar border-b border-gray-100 text-[10px] font-bold">
-                <button id="filter-distance" onclick="applyFilter('distance')" class="px-2.5 py-1.5 rounded-full bg-orange-100 text-[#E57905] border border-orange-300 shrink-0">
-                    <i class="fa-solid fa-arrows-left-right-to-line mr-1"></i> Khoảng cách (Gần UEH B)
+                <button id="filter-distance" onclick="applyFilter('distance')" class="px-2.5 py-1.5 rounded-full bg-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1 transition-all">
+                    <i class="fa-solid fa-arrows-left-right-to-line"></i> Khoảng cách (Gần UEH Cơ sở B nhất)
                 </button>
-                <button id="filter-crowd" onclick="applyFilter('crowd')" class="px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 shrink-0">
-                    <i class="fa-solid fa-users-slash mr-1"></i> Mức độ đông (Vắng/Có chỗ)
+                <button id="filter-crowd" onclick="applyFilter('crowd')" class="px-2.5 py-1.5 rounded-full bg-gray-50 text-gray-600 shrink-0 flex items-center gap-1 border border-gray-100 transition-all">
+                    <i class="fa-solid fa-users-slash"></i> Mức độ đông (Ít đông, còn chỗ)
                 </button>
-                <button id="filter-rating" onclick="applyFilter('rating')" class="px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 shrink-0">
-                    <i class="fa-solid fa-star mr-1"></i> Đánh giá (CSVC cao)
+                <button id="filter-rating" onclick="applyFilter('rating')" class="px-2.5 py-1.5 rounded-full bg-gray-50 text-gray-600 shrink-0 flex items-center gap-1 border border-gray-100 transition-all">
+                    <i class="fa-solid fa-star"></i> Đánh giá (CSVC & dịch vụ cao nhất)
                 </button>
-                <button id="filter-waittime" onclick="applyFilter('waittime')" class="px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 shrink-0">
-                    <i class="fa-solid fa-bolt mr-1"></i> Thời gian chờ (Món nhanh)
+                <button id="filter-waittime" onclick="applyFilter('waittime')" class="px-2.5 py-1.5 rounded-full bg-gray-50 text-gray-600 shrink-0 flex items-center gap-1 border border-gray-100 transition-all">
+                    <i class="fa-solid fa-clock"></i> Thời gian chờ (Order nhanh nhất)
                 </button>
             </div>
 
-            <!-- BẢN ĐỒ NHÚNG (GOOGLE MAPS EMBED - Sẽ tự động đổi view dựa trên bộ lọc) -->
-            <div class="flex-1 relative bg-gray-200">
+            <div class="flex-1 relative bg-slate-100 overflow-hidden">
                 <iframe id="google-maps-iframe" 
-                        class="w-full h-full border-0" 
+                        class="w-full h-full border-0 brightness-95" 
                         src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d15678.847551061974!2d106.66050519302302!3d10.76436663214588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sthe%20coffee%20house%20quan%2010!5e0!3m2!1svi!2s!4v1710000000000!5m2!1svi!2s" 
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        allowfullscreen="" loading="lazy">
                 </iframe>
 
-                <!-- NÚT ĐÈ GIAO DIỆN LÊN MAP ĐỂ CLICK (Giả lập việc nhấn vào Pin trên Map) -->
-                <!-- Vì iframe Google Maps không bắt được sự kiện click vào từng Pin cụ thể, ta tạo các khu vực click giả lập khớp vị trí -->
-                <div class="absolute inset-0 pointer-events-none flex flex-col justify-around p-8">
-                    <button onclick="selectStore(0)" class="pointer-events-auto self-start mt-12 ml-6 bg-[#E57905] text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-md flex items-center gap-1 border border-white">
-                        <i class="fa-solid fa-mug-hot"></i> TCH Nguyễn Tri Phương
-                    </button>
-                    <button onclick="selectStore(1)" class="pointer-events-auto self-end mr-4 bg-[#E57905] text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-md flex items-center gap-1 border border-white">
-                        <i class="fa-solid fa-mug-hot"></i> TCH 3 Tháng 2
-                    </button>
-                    <button onclick="selectStore(2)" class="pointer-events-auto self-center bg-[#E57905] text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-md flex items-center gap-1 border border-white">
-                        <i class="fa-solid fa-mug-hot"></i> TCH Sư Vạn Hạnh
-                    </button>
+                <div class="absolute inset-0 pointer-events-none">
+                    <div id="pin-0" onclick="selectStore(0)" class="pointer-events-auto absolute top-[35%] left-[15%] cursor-pointer transform hover:scale-105 transition-all">
+                        <div class="bg-white text-gray-800 text-[9px] font-bold px-2 py-1 rounded-lg shadow-md border-2 border-[#E57905] flex items-center gap-1">
+                            <i class="fa-solid fa-mug-hot text-[#E57905]"></i> TCH Nguyễn Tri Phương
+                        </div>
+                        <div class="w-2 h-2 bg-[#E57905] rounded-full mx-auto mt-0.5 animate-ping absolute left-1/2 -translate-x-1/2"></div>
+                    </div>
+                    
+                    <div id="pin-1" onclick="selectStore(1)" class="pointer-events-auto absolute top-[20%] right-[10%] cursor-pointer transform hover:scale-105 transition-all">
+                        <div class="bg-white text-gray-800 text-[9px] font-bold px-2 py-1 rounded-lg shadow-md border-2 border-gray-400 opacity-80 flex items-center gap-1">
+                            <i class="fa-solid fa-mug-hot text-gray-400"></i> TCH 3 Tháng 2
+                        </div>
+                    </div>
+
+                    <div id="pin-2" onclick="selectStore(2)" class="pointer-events-auto absolute top-[60%] left-[40%] cursor-pointer transform hover:scale-105 transition-all">
+                        <div class="bg-white text-gray-800 text-[9px] font-bold px-2 py-1 rounded-lg shadow-md border-2 border-gray-400 opacity-80 flex items-center gap-1">
+                            <i class="fa-solid fa-mug-hot text-gray-400"></i> TCH Sư Vạn Hạnh
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- BOTTOM SHEET: THÔNG TIN CHI TIẾT CỬA HÀNG KHI CLICK -->
             <div id="store-sheet" class="bottom-sheet hidden-sheet absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 z-30 p-4 space-y-3 pb-6">
-                <!-- Thanh ngang kéo thả cho đẹp -->
-                <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto" onclick="closeSheet()"></div>
+                <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-1 cursor-pointer" onclick="closeSheet()"></div>
                 
-                <!-- Tiêu đề & Địa chỉ -->
                 <div class="flex justify-between items-start">
                     <div>
-                        <h3 id="sheet-name" class="font-bold text-gray-800 text-sm">The Coffee House - Nguyễn Tri Phương</h3>
-                        <p id="sheet-address" class="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
-                            <i class="fa-solid fa-location-dot"></i> 249 Nguyễn Tri Phương, Quận 10
+                        <h3 id="sheet-name" class="font-bold text-gray-900 text-sm">The Coffee House - Nguyễn Tri Phương</h3>
+                        <p id="sheet-address" class="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5 font-medium">
+                            <i class="fa-solid fa-location-dot text-[#E57905]"></i> 249 Nguyễn Tri Phương, Quận 10
                         </p>
                     </div>
-                    <div class="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-bold text-amber-600">
-                        <i class="fa-solid fa-star"></i> <span id="sheet-rating">4.5</span>
+                    <div class="flex items-center gap-1 bg-orange-50 px-2 py-0.5 rounded-lg text-[10px] font-bold text-[#E57905]">
+                        <i class="fa-solid fa-star text-[9px]"></i> <span id="sheet-rating">4.6</span>
                     </div>
                 </div>
 
-                <!-- 4 CHỈ SỐ HIỆN TẠI (Độ đông, Chờ, Chỗ ngồi, Đi bộ) -->
                 <div class="grid grid-cols-4 gap-2 text-center pt-1">
-                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100">
+                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100/60">
                         <p class="text-[9px] text-gray-400 font-medium">Độ đông</p>
-                        <p id="stat-crowd" class="text-xs font-bold text-green-600 mt-0.5">Vắng</p>
+                        <p id="stat-crowd" class="text-[11px] font-extrabold text-green-600 mt-0.5">Vắng</p>
                     </div>
-                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100">
+                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100/60">
                         <p class="text-[9px] text-gray-400 font-medium">Ước tính chờ</p>
-                        <p id="stat-wait" class="text-xs font-bold text-gray-800 mt-0.5">~3 phút</p>
+                        <p id="stat-wait" class="text-[11px] font-extrabold text-gray-800 mt-0.5">~2 phút</p>
                     </div>
-                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100">
+                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100/60">
                         <p class="text-[9px] text-gray-400 font-medium">Có chỗ ngồi</p>
-                        <p id="stat-seat" class="text-xs font-bold text-blue-600 mt-0.5">Còn bàn</p>
+                        <p id="stat-seat" class="text-[11px] font-extrabold text-blue-600 mt-0.5">Còn bàn lớn</p>
                     </div>
-                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100">
-                        <p class="text-[9px] text-gray-400 font-medium">Đi bộ từ UEH B</p>
-                        <p id="stat-walk" class="text-xs font-bold text-[#E57905] mt-0.5">4 phút</p>
+                    <div class="bg-gray-50 p-2 rounded-xl border border-gray-100/60">
+                        <p class="text-[9px] text-gray-400 font-medium">Thời gian đi bộ</p>
+                        <p id="stat-walk" class="text-[11px] font-extrabold text-[#E57905] mt-0.5">4 phút</p>
                     </div>
                 </div>
 
-                <!-- DỰ BÁO ĐỘ ĐÔNG TRONG NGÀY (AI-POWERED CHART) -->
-                <div class="space-y-1.5">
-                    <p class="text-[10px] font-bold text-gray-600 flex items-center gap-1">
-                        <i class="fa-solid fa-brain text-purple-500 animate-pulse"></i> Dự báo độ đông trong ngày (AI-Powered)
+                <div class="space-y-1.5 pt-1">
+                    <p class="text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
+                        <i class="fa-solid fa-brain text-purple-500 animate-pulse text-[11px]"></i> Dự báo độ đông trong ngày (AI-Powered)
                     </p>
-                    <!-- Biểu đồ cột giả lập bằng HTML/CSS cực nhanh -->
-                    <div class="h-14 bg-gray-50 rounded-xl p-2 flex items-end justify-between gap-1 border border-gray-100">
+                    
+                    <div class="h-16 bg-gray-50 rounded-xl p-2.5 flex items-end justify-between gap-1.5 border border-gray-100">
                         <div class="w-full bg-gray-200 h-[20%] rounded-xs" title="7h"></div>
-                        <div class="w-full bg-gray-200 h-[40%] rounded-xs" title="9h"></div>
-                        <div class="w-full bg-orange-400 h-[85%] rounded-xs" title="11h"></div>
-                        <div class="w-full bg-orange-400 h-[95%] rounded-xs" title="13h"></div>
-                        <div class="w-full bg-orange-300 h-[60%] rounded-xs" title="15h"></div>
-                        <div class="w-full bg-orange-500 h-[100%] rounded-xs relative" title="Hiện tại (17h)">
+                        <div class="w-full bg-gray-200 h-[45%] rounded-xs" title="9h"></div>
+                        <div class="w-full bg-orange-400 h-[80%] rounded-xs" title="11h"></div>
+                        <div class="w-full bg-orange-400 h-[90%] rounded-xs" title="13h"></div>
+                        <div class="w-full bg-orange-300 h-[65%] rounded-xs" title="15h"></div>
+                        <div id="chart-now-bar" class="w-full bg-[#E57905] h-[35%] rounded-xs relative" title="Hiện tại">
                             <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-red-500 border border-white"></span>
                         </div>
-                        <div class="w-full bg-gray-200 h-[50%] rounded-xs" title="19h"></div>
-                        <div class="w-full bg-gray-200 h-[30%] rounded-xs" title="21h"></div>
+                        <div class="w-full bg-gray-200 h-[60%] rounded-xs" title="19h"></div>
+                        <div class="w-full bg-gray-200 h-[40%] rounded-xs" title="21h"></div>
                     </div>
-                    <div class="flex justify-between text-[8px] text-gray-400 px-1">
+                    <div class="flex justify-between text-[8px] text-gray-400 px-1 font-medium">
                         <span>7h00</span>
-                        <span class="text-orange-600 font-bold">Bây giờ</span>
+                        <span class="text-orange-600 font-bold">Bây giờ (17h)</span>
                         <span>21h00</span>
                     </div>
                 </div>
 
-                <!-- Nút CTA hành động -->
-                <div class="pt-1 flex gap-2">
-                    <button onclick="alert('Đã chuyển sang màn hình Đặt món tại chi nhánh này!')" class="flex-1 bg-[#E57905] text-white text-xs font-bold py-2.5 rounded-xl shadow-md">
+                <div class="pt-2 flex gap-2">
+                    <button onclick="alert('Hệ thống đã chọn chi nhánh này để bạn tiến hành đặt món!')" class="flex-1 bg-[#E57905] text-white text-xs font-bold py-2.5 rounded-xl shadow-md active:scale-95 transition-transform">
                         Đặt món tại đây
                     </button>
-                    <button onclick="alert('Mở dẫn đường trên ứng dụng Google Maps!')" class="px-3 border border-gray-200 text-gray-600 rounded-xl text-xs">
-                        <i class="fa-solid fa-diamond-turn-right"></i>
+                    <button onclick="alert('Đang chuyển hướng sang Google Maps để dẫn đường đi bộ...')" class="px-3.5 border border-gray-200 text-gray-500 rounded-xl text-xs active:bg-gray-50">
+                        <i class="fa-solid fa-diamond-turn-right text-[#E57905]"></i>
                     </button>
                 </div>
             </div>
@@ -238,106 +266,149 @@
 
     </div>
 
-    <!-- SCRIPT ĐIỀU KHIỂN LOGIC TƯƠNG TÁC -->
     <script>
-        // 1. Khai báo Mock Data cho các chi nhánh của The Coffee House gần khu vực Quận 10 / UEH B
+        // Dữ liệu mô phỏng 3 chi nhánh xung quanh UEH Cơ sở B Quận 10
         const storesData = [
             {
                 name: "The Coffee House - Nguyễn Tri Phương",
                 address: "249 Nguyễn Tri Phương, Quận 10",
-                rating: "4.6 (Dịch vụ tốt nhất)",
+                rating: "4.6 (Chi nhánh tiện ích)",
                 crowd: "Vắng",
                 wait: "~2 phút",
-                seat: "Còn chỗ lớn",
+                seat: "Còn bàn lớn",
                 walk: "4 phút",
+                barHeight: "35%", // Biểu đồ cột lúc vắng
                 mapsUrl: "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3919.6841235451996!2d106.66442657570313!3d10.75880465952136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sthe%20coffee%20house%20nguyen%20tri%20phuong!5e0!3m2!1svi!2s!4v1710000000001"
             },
             {
                 name: "The Coffee House - 3 Tháng 2",
-                address: "Đường 3 Tháng 2, Quận 10",
-                rating: "4.2 (Không gian rộng)",
+                address: "45 Đường 3 Tháng 2, Quận 10",
+                rating: "4.2 (Giao hàng nhanh)",
                 crowd: "Vừa phải",
                 wait: "~5 phút",
-                seat: "Hết bàn lớn",
+                seat: "Còn bàn đơn",
                 walk: "12 phút",
+                barHeight: "65%", // Biểu đồ cột lúc vừa phải
                 mapsUrl: "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3919.652132145892!2d106.658231!3d10.768123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sthe%20coffee%20house%203%20thang%202!5e0!3m2!1svi!2s!4v1710000000002"
             },
             {
                 name: "The Coffee House - Sư Vạn Hạnh",
-                address: "Vạn Hạnh Mall, Quận 10",
-                rating: "4.8 (CSVC Cao cấp nhất)",
+                address: "Lầu 2 Vạn Hạnh Mall, Quận 10",
+                rating: "4.8 (CSVC & dịch vụ cao nhất)",
                 crowd: "Đông đúc",
                 wait: "~12 phút",
-                seat: "Đầy chỗ",
+                seat: "Hết bàn trống",
                 walk: "15 phút",
+                barHeight: "100%", // Biểu đồ cột lúc cực đông
                 mapsUrl: "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3919.63214!2d106.668123!3d10.77214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sthe%20coffee%20house%20su%20van%20hanh!5e0!3m2!1svi!2s!4v1710000000003"
             }
         ];
 
-        // 2. Các hàm chuyển đổi màn hình chính <-> Bản đồ
+        // Mở / Đóng màn hình Map
         function openMapScreen() {
             document.getElementById('map-screen').classList.remove('hidden');
         }
-
         function closeMapScreen() {
             document.getElementById('map-screen').classList.add('hidden');
             closeSheet();
         }
-
-        // 3. Hàm xử lý khi bấm Bộ Lọc (Filter) -> Thay đổi vị trí Maps hiển thị & Tự động mở chi nhánh ưu tiên ứng với bộ lọc đó
-        function applyFilter(type) {
-            // Reset toàn bộ màu các nút lọc về trạng thái chưa chọn
-            const filters = ['distance', 'crowd', 'rating', 'waittime'];
-            filters.forEach(f => {
-                const btn = document.getElementById(`filter-${f}`);
-                btn.className = "px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 shrink-0";
-            });
-
-            // Đổi màu nút được click sang Màu Orange của TCH
-            const activeBtn = document.getElementById(`filter-${type}`);
-            activeBtn.className = "px-2.5 py-1.5 rounded-full bg-orange-100 text-[#E57905] border border-orange-300 shrink-0";
-
-            // Giả lập thuật toán lọc thông minh bằng cách kích hoạt Chi nhánh phù hợp nhất với tiêu chí đó
-            if (type === 'distance') {
-                selectStore(0); // Nguyễn Tri Phương gần UEH B nhất (4 phút đi bộ)
-            } else if (type === 'crowd') {
-                selectStore(0); // Nguyễn Tri Phương đang ở trạng thái "Vắng"
-            } else if (type === 'rating') {
-                selectStore(2); // Sư Vạn Hạnh có điểm đánh giá CSVC cao nhất (4.8)
-            } else if (type === 'waittime') {
-                selectStore(0); // Nguyễn Tri Phương có thời gian chờ ít nhất (~2 phút)
-            }
+        function closeSheet() {
+            document.getElementById('store-sheet').classList.add('hidden-sheet');
         }
 
-        // 4. Hàm hiển thị Bottom Sheet thông tin chi tiết của Cửa hàng được chọn
+        // Chọn và kích hoạt hiển thị thông tin chi tiết một cửa hàng lên Bottom Sheet
         function selectStore(index) {
             const data = storesData[index];
             
-            // Cập nhật nội dung text tương ứng của Chi nhánh
+            // Đổi màu viền Active Pin trên Map để nhìn giống thật
+            for (let i = 0; i < 3; i++) {
+                const pin = document.getElementById(`pin-${i}`);
+                if (i === index) {
+                    pin.firstElementChild.className = "bg-white text-gray-800 text-[9px] font-bold px-2 py-1 rounded-lg shadow-md border-2 border-[#E57905] flex items-center gap-1 opacity-100";
+                } else {
+                    pin.firstElementChild.className = "bg-white text-gray-800 text-[9px] font-bold px-2 py-1 rounded-lg shadow-md border-2 border-gray-400 flex items-center gap-1 opacity-60";
+                }
+            }
+
+            // Gán thông tin lên Card
             document.getElementById('sheet-name').innerText = data.name;
             document.getElementById('sheet-address').innerText = data.address;
-            document.getElementById('sheet-rating').innerText = data.rating.split(' ')[0]; // lấy phần số điểm
+            document.getElementById('sheet-rating').innerText = data.rating.split(' ')[0];
             
             document.getElementById('stat-crowd').innerText = data.crowd;
             document.getElementById('stat-wait').innerText = data.wait;
             document.getElementById('stat-seat').innerText = data.seat;
             document.getElementById('stat-walk').innerText = data.walk;
 
-            // Đổi màu text chỉ số linh hoạt theo trạng thái
+            // Đổi màu sắc hiển thị chỉ số Độ Đông
             const crowdStat = document.getElementById('stat-crowd');
-            if(data.crowd === "Vắng") crowdStat.className = "text-xs font-bold text-green-600 mt-0.5";
-            else if(data.crowd === "Vừa phải") crowdStat.className = "text-xs font-bold text-amber-500 mt-0.5";
-            else crowdStat.className = "text-xs font-bold text-red-500 mt-0.5";
+            if(data.crowd === "Vắng") crowdStat.className = "text-[11px] font-extrabold text-green-600 mt-0.5";
+            else if(data.crowd === "Vừa phải") crowdStat.className = "text-[11px] font-extrabold text-amber-500 mt-0.5";
+            else crowdStat.className = "text-[11px] font-extrabold text-red-500 mt-0.5";
 
-            // Thay đổi link nhúng của Google Maps Iframe để Map di chuyển đến đúng vị trí Chi nhánh
+            // Thay đổi độ cao cột AI chart tương ứng trạng thái thực tế
+            document.getElementById('chart-now-bar').style.height = data.barHeight;
             document.getElementById('google-maps-iframe').src = data.mapsUrl;
 
-            // Đẩy Bottom Sheet từ dưới lên mượt mà
+            // Đẩy bảng thông tin lên hiển thị
             document.getElementById('store-sheet').classList.remove('hidden-sheet');
         }
 
-        function closeSheet() {
-            document.getElementById('store-sheet').classList.add('hidden-sheet');
+        // Xử lý bộ lọc bằng UI
+        function applyFilter(type) {
+            const filters = ['distance', 'crowd', 'rating', 'waittime'];
+            filters.forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                btn.className = "px-2.5 py-1.5 rounded-full bg-gray-50 text-gray-600 shrink-0 border border-gray-100";
+            });
+
+            const activeBtn = document.getElementById(`filter-${type}`);
+            activeBtn.className = "px-2.5 py-1.5 rounded-full bg-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1";
+
+            if (type === 'distance' || type === 'crowd' || type === 'waittime') {
+                selectStore(0); // Nguyễn Tri Phương tối ưu nhất cho 3 mục này
+            } else if (type === 'rating') {
+                selectStore(2); // Sư Vạn Hạnh đỉnh nhất về CSVC dịch vụ
+            }
+        }
+
+        // KỊCH BẢN KÍCH HOẠT NHANH 6 BƯỚC DEMO WALKTHROUGH
+        function demoStep(step) {
+            // Thay đổi trạng thái các nút bấm thanh điều hướng demo
+            for(let i=1; i<=6; i++) {
+                const btn = document.getElementById(`d-btn-${i}`);
+                if(i === step) btn.className = "p-2 rounded-xl bg-orange-600 text-white font-medium text-left shadow-xs";
+                else btn.className = "p-2 rounded-xl bg-slate-100 text-slate-600 font-medium text-left";
+            }
+
+            const guide = document.getElementById('demo-guide');
+
+            switch(step) {
+                case 1:
+                    openMapScreen();
+                    guide.innerText = "Bước 1: Màn hình chuyển sang Bản đồ hành trình định vị vị trí người dùng tại UEH Cơ sở B.";
+                    break;
+                case 2:
+                    applyFilter('distance');
+                    guide.innerText = "Bước 2: Lọc theo khoảng cách gần nhất -> Định vị ngay quán Nguyễn Tri Phương (Cách 4 phút đi bộ).";
+                    break;
+                case 3:
+                    applyFilter('crowd');
+                    guide.innerText = "Bước 3: Lọc theo độ vắng khách -> Ưu tiên quán Nguyễn Tri Phương (Đang trạng thái Vắng, còn nhiều bàn trống).";
+                    break;
+                case 4:
+                    applyFilter('rating');
+                    guide.innerText = "Bước 4: Thay đổi tiêu chí sang Cơ sở hạ tầng đỉnh cao -> Bản đồ tự động gợi ý quán Sư Vạn Hạnh (4.8 sao).";
+                    break;
+                case 5:
+                    applyFilter('waittime');
+                    guide.innerText = "Bước 5: Lọc quán xếp hàng ít, làm món nhanh nhất để kịp giờ học/làm việc -> Quán Nguyễn Tri Phương (~2 phút chờ).";
+                    break;
+                case 6:
+                    selectStore(0);
+                    guide.innerText = "Bước 6: Nhấn vào Pin trên Bản đồ hiển thị trọn vẹn 4 chỉ số thực tế và biểu đồ dự báo xu hướng đông bằng AI.";
+                    break;
+            }
         }
     </script>
 </body>
