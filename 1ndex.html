@@ -8,94 +8,102 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; }
-    .nav-active { color: #d97706; border-bottom: 3px solid #d97706; }
   </style>
 </head>
-<body class="bg-[#fff9f0] min-h-screen pb-20">
+<body class="bg-[#fff9f0]">
 
-  <!-- Header -->
-  <div class="bg-white px-6 py-4 flex items-center justify-between shadow-sm">
-    <div class="flex items-center gap-2">
-      <div class="text-3xl">☕</div>
+  <!-- Top Bar -->
+  <div class="bg-white px-6 py-4 flex justify-between items-center shadow">
+    <div class="flex items-center gap-3">
+      <span class="text-3xl">☕</span>
       <div>
-        <p class="text-sm text-amber-800">Trường đi, Cà Phê nhé!</p>
+        <p class="text-amber-900 font-medium">Chào buổi sáng!</p>
+        <p class="text-sm text-amber-800">Cà Phê nhé!</p>
       </div>
     </div>
     <div class="flex items-center gap-4">
-      <div class="bg-white border border-amber-300 rounded-full px-4 py-1 flex items-center gap-1 text-sm">
-        🎟️ <span class="font-medium">15</span>
+      <div class="bg-amber-100 text-amber-800 px-4 py-1 rounded-full flex items-center gap-1 text-sm font-medium">
+        🎟️ 15
       </div>
       <div class="relative">
-        <i class="fa-solid fa-bell text-2xl text-gray-700"></i>
-        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">20</span>
+        <i class="fa-solid fa-bell text-2xl"></i>
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">20</span>
       </div>
     </div>
   </div>
 
-  <!-- Brand Selection -->
-  <div class="px-6 pt-6">
-    <h2 class="text-center text-xl font-semibold mb-6">Lựa chọn thương hiệu</h2>
-    <div class="flex justify-center gap-6">
-      <div class="bg-white shadow rounded-3xl p-6 w-28 text-center border-2 border-amber-800">
-        <div class="font-bold text-lg">THE COFFEE HOUSE</div>
-      </div>
-      <div class="bg-[#f5e8c7] shadow rounded-3xl p-6 w-28 text-center">
-        <div class="italic text-amber-800">universal tea</div>
-      </div>
-      <div class="bg-[#f5e8c7] shadow rounded-3xl p-6 w-28 text-center">
-        <div class="text-red-600 font-bold">Flychef</div>
-      </div>
-    </div>
+  <!-- Quick Services -->
+  <div class="px-6 pt-6 grid grid-cols-5 gap-4 text-center">
+    <div><i class="fa-solid fa-motorcycle text-3xl text-amber-700"></i><p class="text-xs mt-1">Giao hàng</p></div>
+    <div><i class="fa-solid fa-bag-shopping text-3xl text-amber-700"></i><p class="text-xs mt-1">Mang đi</p></div>
+    <div><i class="fa-solid fa-mug-hot text-3xl text-amber-700"></i><p class="text-xs mt-1">Tại chỗ</p></div>
+    <div><i class="fa-solid fa-seedling text-3xl text-amber-700"></i><p class="text-xs mt-1">Đổi Bean</p></div>
+    <div><i class="fa-solid fa-receipt text-3xl text-amber-700"></i><p class="text-xs mt-1">Đơn hàng</p></div>
   </div>
 
-  <!-- Quick Actions -->
-  <div class="px-6 mt-8 flex justify-around text-center">
-    <div><i class="fa-solid fa-motorcycle text-3xl mb-1"></i><p class="text-xs">Giao hàng</p></div>
-    <div><i class="fa-solid fa-hand-holding-box text-3xl mb-1"></i><p class="text-xs">Mang đi</p></div>
-    <div><i class="fa-solid fa-mug-hot text-3xl mb-1"></i><p class="text-xs">Tại chỗ</p></div>
-    <div><i class="fa-solid fa-seedling text-3xl mb-1"></i><p class="text-xs">Đổi Bean</p></div>
+  <!-- AI Smart Visit Planner -->
+  <div class="mx-6 mt-6 bg-white rounded-3xl p-4 shadow flex items-center gap-4 border border-amber-200">
+    <div class="text-4xl">🤖</div>
+    <div class="flex-1">
+      <p class="font-semibold">Nhà</p>
+      <p class="text-sm text-gray-600">Tìm quán hợp nhất cho bạn ngay lúc này</p>
+    </div>
+    <button onclick="window.location.href='map.html'" class="bg-amber-800 text-white px-6 py-3 rounded-2xl text-sm font-medium">Xem ngay</button>
   </div>
 
   <!-- Promotion Banner -->
-  <div class="mx-6 mt-8 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-3xl overflow-hidden relative h-64">
-    <div class="absolute top-6 left-6 text-white">
-      <div class="text-4xl font-bold">MUA 1 TẶNG 1</div>
-      <div class="text-2xl">MATCHA / FRAPPE</div>
+  <div class="mx-6 mt-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-3xl overflow-hidden relative h-72 flex items-end">
+    <div class="p-8 text-white">
+      <h2 class="text-5xl font-bold leading-none">MUA 1<br>TẶNG 1</h2>
+      <p class="text-2xl mt-2">MATCHA / FRAPPE</p>
     </div>
-    <img src="https://source.unsplash.com/random/400x300/?matcha" class="absolute bottom-0 right-0 h-56" alt="promotion">
-    <div class="absolute bottom-6 left-6 bg-white text-black px-4 py-1 rounded-full text-sm font-medium">
-      TẶNG1LY
+    <img src="https://picsum.photos/id/1015/600/400" alt="Matcha Frappe" class="absolute bottom-0 right-0 h-80">
+    <div class="absolute bottom-6 left-8 bg-white text-black px-5 py-2 rounded-2xl text-sm font-bold">
+      Nhập mã <span class="text-blue-600">TANG1LY</span>
     </div>
   </div>
 
+  <!-- Promotion Title -->
   <div class="px-6 mt-4">
-    <p class="font-semibold text-lg">MUA 1 TẶNG 1 MATCHA/FRAPPE</p>
-    <p class="text-sm text-gray-600">Khuyến mãi còn hiệu lực trong <span class="font-bold">08:26</span></p>
+    <p class="font-bold text-xl">MUA 1 TẶNG 1 MATCHA/FRAPPE</p>
+    <p class="text-sm text-gray-600">Khuyến mãi còn hiệu lực trong <span class="font-semibold text-amber-700">08:26</span></p>
   </div>
 
-  <!-- Bottom Navigation -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white border-t py-2 flex justify-around text-xs">
-    <a href="#" class="flex flex-col items-center text-amber-600 nav-active">
-      <i class="fa-solid fa-house text-2xl"></i>
-      <span>Trang chủ</span>
+  <!-- Ưu đãi -->
+  <div class="px-6 mt-10">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-semibold text-lg">Ưu đãi dành cho bạn</h3>
+      <span class="text-amber-600 text-sm">Xem tất cả →</span>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-white rounded-3xl p-4">
+        <p class="text-sm text-amber-700">HSD: 20/07</p>
+        <p class="font-semibold">Giảm 25% đơn hàng</p>
+      </div>
+      <div class="bg-white rounded-3xl p-4">
+        <p class="text-sm text-amber-700">Freeship</p>
+        <p class="font-semibold">Đơn từ 79k</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t py-3 flex justify-around text-[10px]">
+    <a href="#" class="flex flex-col items-center text-amber-600">
+      <i class="fa-solid fa-house text-2xl"></i><span>Trang chủ</span>
     </a>
     <a href="#" class="flex flex-col items-center text-gray-500">
-      <i class="fa-solid fa-mug-hot text-2xl"></i>
-      <span>Đặt hàng</span>
+      <i class="fa-solid fa-mug-hot text-2xl"></i><span>Đặt hàng</span>
     </a>
     <a href="map.html" class="flex flex-col items-center text-gray-500">
-      <i class="fa-solid fa-store text-2xl"></i>
-      <span>Cửa hàng</span>
+      <i class="fa-solid fa-store text-2xl"></i><span>Cửa hàng</span>
     </a>
     <a href="#" class="flex flex-col items-center text-gray-500">
-      <i class="fa-solid fa-gift text-2xl"></i>
-      <span>Ưu đãi</span>
+      <i class="fa-solid fa-gift text-2xl"></i><span>Ưu đãi</span>
     </a>
     <a href="#" class="flex flex-col items-center text-gray-500">
-      <i class="fa-solid fa-bars text-2xl"></i>
-      <span>Khác</span>
+      <i class="fa-solid fa-bars text-2xl"></i><span>Khác</span>
     </a>
-  </div>
-
+  </nav>
 </body>
 </html>
