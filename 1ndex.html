@@ -5,37 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Coffee House</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; }
-    .hero { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/random/1600x900/?coffee') center/cover; }
+    .nav-active { color: #d97706; border-bottom: 3px solid #d97706; }
   </style>
 </head>
-<body class="bg-gray-50">
-  <nav class="bg-white shadow-sm fixed w-full z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl">☕</span>
-        <h1 class="text-2xl font-bold text-amber-900">The Coffee House</h1>
-      </div>
-      <a href="map.html" class="bg-amber-800 text-white px-8 py-3 rounded-2xl font-medium hover:bg-amber-900 transition">
-        🗺️ Bản đồ Chi nhánh
-      </a>
-    </div>
-  </nav>
+<body class="bg-[#fff9f0] min-h-screen pb-20">
 
-  <div class="hero h-screen flex items-center justify-center text-white text-center pt-16">
-    <div>
-      <h2 class="text-6xl font-bold mb-4">Chào buổi sáng ☕</h2>
-      <p class="text-2xl mb-8">Tìm chi nhánh gần bạn nhất</p>
-      <a href="map.html" class="inline-block bg-white text-amber-900 px-10 py-4 rounded-3xl text-xl font-semibold hover:scale-105 transition">
-        Mở Bản đồ
-      </a>
+  <!-- Header -->
+  <div class="bg-white px-6 py-4 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-2">
+      <div class="text-3xl">☕</div>
+      <div>
+        <p class="text-sm text-amber-800">Trường đi, Cà Phê nhé!</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-white border border-amber-300 rounded-full px-4 py-1 flex items-center gap-1 text-sm">
+        🎟️ <span class="font-medium">15</span>
+      </div>
+      <div class="relative">
+        <i class="fa-solid fa-bell text-2xl text-gray-700"></i>
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">20</span>
+      </div>
     </div>
   </div>
 
-  <footer class="bg-amber-900 text-white py-8 text-center">
-    <p>Demo The Coffee House • Made with ❤️ for learning</p>
-  </footer>
+  <!-- Brand Selection -->
+  <div class="px-6 pt-6">
+    <h2 class="text-center text-xl font-semibold mb-6">Lựa chọn thương hiệu</h2>
+    <div class="flex justify-center gap-6">
+      <div class="bg-white shadow rounded-3xl p-6 w-28 text-center border-2 border-amber-800">
+        <div class="font-bold text-lg">THE COFFEE HOUSE</div>
+      </div>
+      <div class="bg-[#f5e8c7] shadow rounded-3xl p-6 w-28 text-center">
+        <div class="italic text-amber-800">universal tea</div>
+      </div>
+      <div class="bg-[#f5e8c7] shadow rounded-3xl p-6 w-28 text-center">
+        <div class="text-red-600 font-bold">Flychef</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="px-6 mt-8 flex justify-around text-center">
+    <div><i class="fa-solid fa-motorcycle text-3xl mb-1"></i><p class="text-xs">Giao hàng</p></div>
+    <div><i class="fa-solid fa-hand-holding-box text-3xl mb-1"></i><p class="text-xs">Mang đi</p></div>
+    <div><i class="fa-solid fa-mug-hot text-3xl mb-1"></i><p class="text-xs">Tại chỗ</p></div>
+    <div><i class="fa-solid fa-seedling text-3xl mb-1"></i><p class="text-xs">Đổi Bean</p></div>
+  </div>
+
+  <!-- Promotion Banner -->
+  <div class="mx-6 mt-8 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-3xl overflow-hidden relative h-64">
+    <div class="absolute top-6 left-6 text-white">
+      <div class="text-4xl font-bold">MUA 1 TẶNG 1</div>
+      <div class="text-2xl">MATCHA / FRAPPE</div>
+    </div>
+    <img src="https://source.unsplash.com/random/400x300/?matcha" class="absolute bottom-0 right-0 h-56" alt="promotion">
+    <div class="absolute bottom-6 left-6 bg-white text-black px-4 py-1 rounded-full text-sm font-medium">
+      TẶNG1LY
+    </div>
+  </div>
+
+  <div class="px-6 mt-4">
+    <p class="font-semibold text-lg">MUA 1 TẶNG 1 MATCHA/FRAPPE</p>
+    <p class="text-sm text-gray-600">Khuyến mãi còn hiệu lực trong <span class="font-bold">08:26</span></p>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t py-2 flex justify-around text-xs">
+    <a href="#" class="flex flex-col items-center text-amber-600 nav-active">
+      <i class="fa-solid fa-house text-2xl"></i>
+      <span>Trang chủ</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-mug-hot text-2xl"></i>
+      <span>Đặt hàng</span>
+    </a>
+    <a href="map.html" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-store text-2xl"></i>
+      <span>Cửa hàng</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-gift text-2xl"></i>
+      <span>Ưu đãi</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-bars text-2xl"></i>
+      <span>Khác</span>
+    </a>
+  </div>
+
 </body>
 </html>
