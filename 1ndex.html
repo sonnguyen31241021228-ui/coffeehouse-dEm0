@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Coffee House</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .hero { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/random/1600x900/?coffee') center/cover; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <nav class="bg-white shadow-sm fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">☕</span>
+        <h1 class="text-2xl font-bold text-amber-900">The Coffee House</h1>
+      </div>
+      <a href="map.html" class="bg-amber-800 text-white px-8 py-3 rounded-2xl font-medium hover:bg-amber-900 transition">
+        🗺️ Bản đồ Chi nhánh
+      </a>
+    </div>
+  </nav>
+
+  <div class="hero h-screen flex items-center justify-center text-white text-center pt-16">
+    <div>
+      <h2 class="text-6xl font-bold mb-4">Chào buổi sáng ☕</h2>
+      <p class="text-2xl mb-8">Tìm chi nhánh gần bạn nhất</p>
+      <a href="map.html" class="inline-block bg-white text-amber-900 px-10 py-4 rounded-3xl text-xl font-semibold hover:scale-105 transition">
+        Mở Bản đồ
+      </a>
+    </div>
+  </div>
+
+  <footer class="bg-amber-900 text-white py-8 text-center">
+    <p>Demo The Coffee House • Made with ❤️ for learning</p>
+  </footer>
+</body>
+</html>
