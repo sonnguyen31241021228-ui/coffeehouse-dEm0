@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coffee House - Shared Table Demo</title>
+    <!-- Tailwind CSS for rapid prototyping -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Force a realistic mobile frame on desktop views */
+        body {
+            background-color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .phone-container {
+            width: 375px;
+            height: 720px;
+            background: white;
+            border: 8px solid #1f2937;
+            border-radius: 36px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        /* Hide scrollbar */
+        .phone-container::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- DEMO CONTROLLER (For presentation purposes) -->
+    <div class="mb-4 bg-white p-3 rounded-xl shadow-md flex gap-4 text-xs font-semibold">
+        <span class="text-gray-500 self-center">PRESENTATION TOGGLE:</span>
+        <button onclick="switchRole('host')" id="btn-host" class="px-3 py-1.5 rounded-lg bg-[#E57905] text-white">1. Host Perspective</button>
+        <button onclick="switchRole('guest')" id="btn-guest" class="px-3 py-1.5 rounded-lg bg-gray-200 text-gray-700">2. Guest Perspective</button>
+    </div>
+
+    <!-- PHONE FRAME -->
+    <div class="phone-container flex flex-col justify-between">
+        
+        <!-- APP HEADER -->
+        <div class="bg-white pt-6 pb-3 px-4 border-b border-gray-100 flex items-center justify-between sticky top-0 z-10">
+            <button class="text-gray-700 text-lg"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="text-center">
+                <h1 class="font-bold text-sm text-gray-800">Bàn Ăn Chung #TCH402</h1>
+                <p class="text-[10px] text-green-600 flex items-center justify-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Đang kết nối (3 người)
+                </p>
+            </div>
+            <button class="text-[#E57905] text-xs font-bold" onclick="alert('Đã sao chép link mời nhóm!')">
+                <i class="fa-solid fa-user-plus"></i> Mời
+            </button>
+        </div>
+
+        <!-- APP CONTENT BODY -->
+        <div class="p-4 flex-1 space-y-4">
+            
+            <!-- STEP 1: HOST CHOOSE DRINK / GENERAL MENU -->
+            <div class="bg-orange-50 border border-orange-100 rounded-xl p-3 text-xs">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-gray-800 flex items-center gap-1.5 text-[#E57905]">
+                        <i class="fa-solid fa-mug-hot"></i> Thực đơn của bạn
+                    </span>
+                    <span class="text-[10px] bg-orange-200 text-[#E57905] px-2 py-0.5 rounded-full font-bold">Bạn</span>
+                </div>
+                <div class="flex justify-between items-center bg-white p-2.5 rounded-lg shadow-xs">
+                    <div>
+                        <p class="font-medium text-gray-800">Trà Đào Cam Sả</p>
+                        <p class="text-[10px] text-gray-400">Size M • Ít đường • Thêm đào</p>
+                    </div>
+                    <span class="font-bold text-sm text-gray-800">65.000đ</span>
+                </div>
+            </div>
+
+            <!-- STEP 2: LIVE MEMBERS UPDATES -->
+            <div class="space-y-2">
+                <p class="text-xs font-bold text-gray-500 tracking-wide uppercase text-[10px]">Đơn hàng từ đồng nghiệp</p>
+                
+                <!-- Guest 1 item -->
+                <div class="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 text-xs">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-[10px]">AN</div>
+                        <div>
+                            <p class="font-medium text-gray-800">Linh Anh</p>
+                            <p class="text-[10px] text-gray-400">Đường Đen Sữa Đá • Size L</p>
+                        </div>
+                    </div>
+                    <span class="font-semibold text-gray-600">49.000đ</span>
+                </div>
+
+                <!-- Guest 2 dynamic item (Controlled by demo toggle) -->
+                <div id="guest-live-item" class="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 text-xs transition-all duration-300">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-[10px]">TD</div>
+                        <div>
+                            <p class="font-medium text-gray-800">Toàn Duy</p>
+                            <p id="guest-status-text" class="text-[10px] text-gray-400">Đang chọn món...</p>
+                        </div>
+                    </div>
+                    <span id="guest-price" class="font-semibold text-gray-400">--</span>
+                </div>
+            </div>
+
+            <!-- STEP 3: DYNAMIC BILL SUMMARY -->
+            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 space-y-2 text-xs">
+                <div class="flex justify-between text-gray-500">
+                    <span>Tạm tính (3 món)</span>
+                    <span id="subtotal">114.000đ</span>
+                </div>
+                <div class="flex justify-between text-green-600 font-medium">
+                    <span>Ưu đãi nhóm (Giảm 15%)</span>
+                    <span id="discount">-17.100đ</span>
+                </div>
+                <div class="border-t border-dashed border-gray-200 my-2 pt-2 flex justify-between font-bold text-sm text-gray-800">
+                    <span>Tổng hóa đơn</span>
+                    <span id="total-price" class="text-[#E57905]">96.900đ</span>
+                </div>
+                <div id="split-box" class="hidden bg-white p-2 rounded-md border border-gray-100 text-[11px] text-gray-500 space-y-1">
+                    <p class="font-bold text-gray-700 mb-1"><i class="fa-solid fa-calculator text-[#E57905]"></i> Chia tiền dự kiến:</p>
+                    <div class="flex justify-between"><span>Bạn (Trà Đào):</span> <span class="font-semibold text-gray-700">55.250đ</span></div>
+                    <div class="flex justify-between"><span>Linh Anh:</span> <span class="font-semibold text-gray-700">41.650đ</span></div>
+                    <div id="split-guest-row" class="flex justify-between hidden"><span>Toàn Duy:</span> <span class="font-semibold text-gray-700">46.750đ</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER ACTIONS (DYNAMICS CONTROL BASED ON USER ROLE) -->
+        <div class="p-4 bg-white border-t border-gray-100 rounded-b-[28px] sticky bottom-0">
+            <!-- Host View Button Trigger -->
+            <div id="host-action-zone" class="space-y-2">
+                <button onclick="alert('Đã gửi đơn hàng đến nhà bếp!')" class="w-full bg-[#E57905] text-white text-sm font-bold py-3 rounded-xl shadow-lg shadow-orange-600/20 active:scale-95 transition-transform">
+                    Chốt Đơn & Thanh Toán
+                </button>
+                <p class="text-[10px] text-center text-gray-400">Bạn là Trưởng nhóm. Bạn chịu trách nhiệm gửi đơn.</p>
+            </div>
+
+            <!-- Guest View Button Trigger -->
+            <div id="guest-action-zone" class="space-y-2 hidden">
+                <button id="btn-add-item" onclick="guestAddDrink()" class="w-full bg-emerald-600 text-white text-sm font-bold py-3 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-95 transition-transform">
+                    Thêm Oolong Nướng (55k) Vào Nhóm
+                </button>
+                <p class="text-[10px] text-center text-gray-400">Đơn của bạn sẽ tự động đồng bộ hóa lên màn hình của Trưởng Nhóm.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CORE INTERACTION LOGIC -->
+    <script>
+        function switchRole(role) {
+            const btnHost = document.getElementById('btn-host');
+            const btnGuest = document.getElementById('btn-guest');
+            const hostZone = document.getElementById('host-action-zone');
+            const guestZone = document.getElementById('guest-action-zone');
+
+            if (role === 'host') {
+                btnHost.className = "px-3 py-1.5 rounded-lg bg-[#E57905] text-white";
+                btnGuest.className = "px-3 py-1.5 rounded-lg bg-gray-200 text-gray-700";
+                hostZone.classList.remove('hidden');
+                guestZone.classList.add('hidden');
+            </div> else {
+                btnGuest.className = "px-3 py-1.5 rounded-lg bg-emerald-600 text-white";
+                btnHost.className = "px-3 py-1.5 rounded-lg bg-gray-200 text-gray-700";
+                guestZone.classList.remove('hidden');
+                hostZone.classList.add('hidden');
+            }
+        }
+
+        function guestAddDrink() {
+            // UI Change to emulate real-time action simulation
+            document.getElementById('guest-status-text').innerText = "Oolong Nướng Thạch • Size M";
+            document.getElementById('guest-price').innerText = "55.000đ";
+            document.getElementById('guest-price').className = "font-semibold text-gray-800";
+            
+            // Recalculate bill
+            document.getElementById('subtotal').innerText = "169.000đ";
+            document.getElementById('discount').innerText = "-25.350đ";
+            document.getElementById('total-price').innerText = "143.650đ";
+            
+            // Show auto split pricing update
+            document.getElementById('split-box').classList.remove('hidden');
+            document.getElementById('split-guest-row').classList.remove('hidden');
+            
+            // Change button state
+            const addBtn = document.getElementById('btn-add-item');
+            addBtn.innerText = "✓ Đã Thêm Xong Đơn";
+            addBtn.className = "w-full bg-gray-400 text-white text-sm font-bold py-3 rounded-xl cursor-not-allowed";
+            addBtn.disabled = true;
+        }
+    </script>
+</body>
+</html>
